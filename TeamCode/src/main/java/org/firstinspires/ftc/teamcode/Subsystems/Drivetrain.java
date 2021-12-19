@@ -17,7 +17,7 @@ public class Drivetrain extends Subsystem {
         rightFront.setDirection(DcMotorEx.Direction.REVERSE);
         rightBack.setDirection(DcMotorEx.Direction.REVERSE);
     }
-    public void mecanum(double x, double y, double r) {
+    public void goXYR(double x, double y, double r) {
         // Calculate the power
         double leftFrontPower = Range.clip(y + x + r, -1.0, 1.0) / speedMod;
         double leftBackPower = Range.clip(y - x + r, -1.0, 1.0) / speedMod;
@@ -28,6 +28,18 @@ public class Drivetrain extends Subsystem {
         leftBack.setPower(leftBackPower);
         rightFront.setPower(rightFrontPower);
         rightBack.setPower(rightBackPower);
+    }
+    public void goPolarDegrees(double angle, double magnitude){
+        goPolarRadians(Math.toRadians(angle), magnitude);
+    }
+    public void goPolarRadians(double angle, double magnitude){ // See
+        double piOver4 = Math.PI / 4;
+        double leftSlant = Math.sin(angle - piOver4) * Range.clip(magnitude, -1, 1);
+        double rightSlant = Math.sin(angle + piOver4) * Range.clip(magnitude, -1, 1);
+        leftFront.setPower(leftSlant);
+        rightBack.setPower(leftSlant);
+        rightFront.setPower(rightSlant);
+        rightBack.setPower(rightSlant);
     }
 
 }
