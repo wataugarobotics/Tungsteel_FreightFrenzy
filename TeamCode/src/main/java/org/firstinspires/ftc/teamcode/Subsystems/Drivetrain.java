@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
 public class Drivetrain extends Subsystem {
-    float speedMod = 1;
+    private float speedMod = 1;
     DcMotorEx leftFront, leftBack, rightFront, rightBack;
     public Drivetrain(HardwareMap hwMap) {
         leftFront = hwMap.get(DcMotorEx.class, "leftFront");
@@ -32,7 +32,7 @@ public class Drivetrain extends Subsystem {
     public void goPolarDegrees(double angle, double magnitude){
         goPolarRadians(Math.toRadians(angle), magnitude);
     }
-    public void goPolarRadians(double angle, double magnitude){ // See
+    public void goPolarRadians(double angle, double magnitude){ // See seamonsters mecanum site
         double piOver4 = Math.PI / 4;
         double leftSlant = Math.sin(angle - piOver4) * Range.clip(magnitude, -1, 1);
         double rightSlant = Math.sin(angle + piOver4) * Range.clip(magnitude, -1, 1);
@@ -40,6 +40,12 @@ public class Drivetrain extends Subsystem {
         rightBack.setPower(leftSlant);
         rightFront.setPower(rightSlant);
         rightBack.setPower(rightSlant);
+    }
+    public void setSpeedMod(float speedMod){
+        this.speedMod = speedMod;
+    }
+    public float getSpeedMod(){
+        return speedMod;
     }
 
 }
