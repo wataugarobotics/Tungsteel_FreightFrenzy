@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Roadrunner.util.Encoder;
+import org.firstinspires.ftc.teamcode.Units;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,10 +39,10 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public static double WHEEL_RADIUS = 1.474/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X = 0; // X is the up and down direction
-    public static double PARALLEL_Y = 0; // Y is the strafe direction
+    public static double PARALLEL_X = Units.toIn(-156); // X is the up and down direction
+    public static double PARALLEL_Y = Units.toIn(-77.67); // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = 0;
+    public static double PERPENDICULAR_X = Units.toIn(53.67);
     public static double PERPENDICULAR_Y = 0;
 
     // Parallel/Perpendicular to the forward axis
