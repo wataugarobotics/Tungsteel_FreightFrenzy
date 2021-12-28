@@ -9,8 +9,4 @@ public class Pushbot {
     public Pushbot(HardwareMap hwMap){
         drivetrain = new Drivetrain(hwMap);
     }
-
-    public void init(){
-
-    }
 }
