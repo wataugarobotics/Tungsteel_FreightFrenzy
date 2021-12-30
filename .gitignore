@@ -96,7 +96,7 @@ lint/tmp/
 output.json
 
 # IntelliJ
-.idea/
+.idea/*
 
 # Keystore files
 *.jks
