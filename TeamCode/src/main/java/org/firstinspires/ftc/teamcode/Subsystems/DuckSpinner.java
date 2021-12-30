@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-public class DuckSpinner extends Subsystem{
+import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
+
+public class DuckSpinner extends Subsystem {
 }

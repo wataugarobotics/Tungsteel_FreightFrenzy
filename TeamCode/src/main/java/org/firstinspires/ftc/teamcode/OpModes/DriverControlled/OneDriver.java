@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.OpModes.DriverControlled;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.Systems.Pushbot;
 
 
 @TeleOp(name="OneDriver",group="Tungsteel 21-22")
@@ -12,7 +11,7 @@ public class OneDriver extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Robot robot = new Robot(hardwareMap);
+        Pushbot robot = new Pushbot(hardwareMap);
 
         waitForStart();
 
