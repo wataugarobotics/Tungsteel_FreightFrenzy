@@ -2,7 +2,7 @@ repositories {
     mavenCentral()
     maven { url = 'https://maven.brott.dev/' } //FTC Dashboard
     google() // Needed for androidx
-    jcenter()  // Needed for tensorflow-lite
+    //jcenter()  // Needed for tensorflow-lite
     flatDir {
         dirs rootProject.file('libs')
     }
@@ -22,7 +22,6 @@ dependencies {
     implementation 'org.firstinspires.ftc:gameAssets-FreightFrenzy:1.0.0'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.3' //FTC Dashboard
     implementation('com.acmerobotics.dashboard:dashboard:0.4.3') {
-        exclude group: 'org.firstinspires.ftc' //something for ftc dashboard
     }
 }
 

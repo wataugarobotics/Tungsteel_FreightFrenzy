@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-public class Lift extends Subsystem{
+import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
+
+public class Lift extends Subsystem {
 }
