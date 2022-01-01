@@ -20,7 +20,7 @@ import javax.annotation.CheckForNull;
 
 // Box positions on line 62
 
-class CameraHardware extends Subsystem {
+public class CameraHardware extends Subsystem {
     OpenCvCamera camera;
     DuckFinderPipeline DuckFinderPipeline;
     int framesWithoutDetection = 0;
