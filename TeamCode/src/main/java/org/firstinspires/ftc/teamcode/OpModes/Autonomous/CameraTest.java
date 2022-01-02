@@ -9,7 +9,6 @@ import org.openftc.apriltag.AprilTagPose;
 @Autonomous(name="Camera Test",group="Tungsteel 21-22")
 public class CameraTest extends LinearOpMode {
     CameraBot robot;
-    @SuppressWarnings("RedundantThrows")
     public void runOpMode() throws InterruptedException {
         robot = new CameraBot(hardwareMap);
         AprilTagPose lastPose = null;
