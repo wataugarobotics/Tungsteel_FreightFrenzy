@@ -5,13 +5,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.firstinspires.ftc.teamcode.Libraries.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.apriltag.AprilTagPose;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -22,24 +28,14 @@ import javax.annotation.CheckForNull;
 
 public class CameraHardware extends Subsystem {
     OpenCvCamera camera;
-    DuckFinderPipeline DuckFinderPipeline;
-    int framesWithoutDetection = 0;
-    /* ***** CONFIGURATION ***** */
-    double tagsize = 0.0508; //Meters
-    // Lens intrinsics  // CONFIGURED WITH ZEPHYR BY KYLE
-    double fx = 1038.02; //
-    double fy = 1038.02; //
-    double cx = 630.346; //
-    double cy = 497.208; //
-    //                   //
-    /* ************************* */
+    DuckFinderPipeline duckFinderPipeline;
+
     public CameraHardware(HardwareMap hwMap){
         // This chunk of code sets up the camera, and feeds the images captured from the camera to the EOCV pipeline
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-        aprilTagDetectionPipeline.setDecimation(3);
-        camera.setPipeline(aprilTagDetectionPipeline);
+        duckFinderPipeline = new DuckFinderPipeline();
+        camera.setPipeline(duckFinderPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -51,15 +47,14 @@ public class CameraHardware extends Subsystem {
         });
     }
 
-    class DuckFinderPipeline extends OpenCvPipeline {
-
+    static class DuckFinderPipeline extends OpenCvPipeline {
         public enum DuckPosition { // First is bottom level of the shipping hub
             FIRST,
             SECOND,
             THIRD
         }
 
-        static final Scalar BLUE = new Scalar(0, 0, 255); // Color constant for box drawing
+        final Scalar BLUE = new Scalar(0, 0, 255); // Color constant for box drawing
         
         // The following values define the regions
         static final Point REGION1_ANCHOR = new Point(0, 0); // Top left of rectangle
@@ -109,7 +104,7 @@ public class CameraHardware extends Subsystem {
             region2_Y = Y.submat(new Rect(region2_pointA, region2_pointB));
             region3_Y = Y.submat(new Rect(region3_pointA, region3_pointB));
         }
-
+        @Override
         public Mat processFrame(Mat input) {
             inputToY(input);
 
@@ -149,7 +144,7 @@ public class CameraHardware extends Subsystem {
         }
 
         public int[] getAnalysis() {
-            return {avg1, avg2, avg3};
+            return new int[]{avg1, avg2, avg3};
         }
     }
 }
