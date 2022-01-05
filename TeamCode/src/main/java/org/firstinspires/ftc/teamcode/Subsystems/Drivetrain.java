@@ -8,28 +8,28 @@ import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
 
 public class Drivetrain extends Subsystem {
     private float speedMod = 1;
-    DcMotorEx leftFront, leftBack, rightFront, rightBack;
+    DcMotorEx leftFront, leftRear, rightFront, rightRear;
     public Drivetrain(HardwareMap hwMap) {
         leftFront = hwMap.get(DcMotorEx.class, "leftFront");
-        leftBack = hwMap.get(DcMotorEx.class, "leftBack");
+        leftRear = hwMap.get(DcMotorEx.class, "leftRear");
         rightFront = hwMap.get(DcMotorEx.class, "rightFront");
-        rightBack = hwMap.get(DcMotorEx.class, "leftRightBack");
+        rightRear = hwMap.get(DcMotorEx.class, "leftRightRear");
         leftFront.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBack.setDirection(DcMotorEx.Direction.FORWARD);
+        leftRear.setDirection(DcMotorEx.Direction.FORWARD);
         rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBack.setDirection(DcMotorEx.Direction.REVERSE);
+        rightRear.setDirection(DcMotorEx.Direction.REVERSE);
     }
     public void goXYR(double x, double y, double r) {
         // Calculate the power
         double leftFrontPower = Range.clip(y + x + r, -1.0, 1.0) / speedMod;
-        double leftBackPower = Range.clip(y - x + r, -1.0, 1.0) / speedMod;
+        double leftRearPower = Range.clip(y - x + r, -1.0, 1.0) / speedMod;
         double rightFrontPower = Range.clip(y - x - r, -1.0, 1.0) / speedMod;
-        double rightBackPower = Range.clip(y + x - r, -1.0, 1.0) / speedMod;
+        double rightRearPower = Range.clip(y + x - r, -1.0, 1.0) / speedMod;
         // Send calculated power to wheels
         leftFront.setPower(leftFrontPower);
-        leftBack.setPower(leftBackPower);
+        leftRear.setPower(leftRearPower);
         rightFront.setPower(rightFrontPower);
-        rightBack.setPower(rightBackPower);
+        rightRear.setPower(rightRearPower);
     }
     public void goPolarDegrees(double angle, double magnitude){
         goPolarRadians(Math.toRadians(angle), magnitude);
@@ -39,9 +39,9 @@ public class Drivetrain extends Subsystem {
         double leftSlant = Math.sin(angle - piOver4) * Range.clip(magnitude, -1, 1);
         double rightSlant = Math.sin(angle + piOver4) * Range.clip(magnitude, -1, 1);
         leftFront.setPower(leftSlant);
-        rightBack.setPower(leftSlant);
+        rightRear.setPower(leftSlant);
         rightFront.setPower(rightSlant);
-        rightBack.setPower(rightSlant);
+        rightRear.setPower(rightSlant);
     }
     public void setSpeedMod(float speedMod){
         this.speedMod = speedMod;
