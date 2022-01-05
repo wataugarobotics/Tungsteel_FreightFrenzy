@@ -34,18 +34,19 @@ public class SingleMotorPositionTest extends LinearOpMode {
         while (opModeIsActive()) {
             if(gamepad1.left_bumper) targetVelocity = 1;
             if(gamepad1.right_bumper) targetVelocity = -1;
-            //TODO: Servos
             if(gamepad1.a) motor.setTargetPosition(0);
             if(gamepad1.x) motor.setTargetPosition(230);
             if(gamepad1.b) motor.setTargetPosition(700);
             if(gamepad1.y) motor.setTargetPosition(1300);
+            if(gamepad1.start) motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motor.setPower(1);
-//            motor.setVelocity(targetVelocity
+            if(motor.isBusy()) motor.setPower(1);
+
             currentVelocity = motor.getVelocity();
             currentPos = motor.getCurrentPosition();
             if (currentVelocity > maxVelocity)
                 maxVelocity = currentVelocity;
+
             telemetry.addData("current velocity", currentVelocity);
             telemetry.addData("current position", currentPos);
             telemetry.addData("position delta", currentPos-motor.getTargetPosition());

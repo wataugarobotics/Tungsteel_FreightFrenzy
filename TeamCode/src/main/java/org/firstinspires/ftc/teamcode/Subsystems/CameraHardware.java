@@ -59,5 +59,13 @@ public class CameraHardware extends Subsystem {
         if (framesWithoutDetection >= 6) //6 is adjustable, after 6 frames without detecting anything, lower threshold for detecting tags
             aprilTagDetectionPipeline.setDecimation(3);
         return detections;
-        }
+    }
+    public boolean newDetectionExists(){
+        ArrayList<AprilTagDetection> detectionsList = new ArrayList<AprilTagDetection>();
+        detectionsList = aprilTagDetectionPipeline.getDetectionsUpdate();
+       if(detectionsList != null){
+           return detectionsList.size() > 0;
+       }
+       return false;
+    }
 }
