@@ -43,7 +43,7 @@ public class Drivetrain extends Subsystem {
         goPolarRadians(Math.toRadians(angle), magnitude);
     }
     public void goPolarRadians(double angle, double magnitude){ // Strafes the robot at a specified angle
-        double piOver4 = Math.PI / 4; //see Seamonsters mecanum site for math
+        double piOver4 = Math.PI / 4; //see Seamonster's mecanum site for math
         double leftSlant = Math.sin(angle - piOver4) * Range.clip(magnitude, -1, 1);
         double rightSlant = Math.sin(angle + piOver4) * Range.clip(magnitude, -1, 1);
         leftFront.setPower(leftSlant);
