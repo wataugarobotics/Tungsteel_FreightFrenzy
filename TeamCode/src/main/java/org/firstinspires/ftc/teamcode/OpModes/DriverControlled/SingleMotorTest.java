@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModes.DriverControlled;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.Pushbot;
-
+@Disabled
 @TeleOp(name="SingleMotorTest",group="Tungsteel 21-22")
 public class SingleMotorTest extends LinearOpMode {
     DcMotorEx motor;
