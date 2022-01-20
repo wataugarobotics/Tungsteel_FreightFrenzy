@@ -9,13 +9,12 @@ import org.openftc.apriltag.AprilTagPose;
 @Autonomous(name="Camera Test",group="Tungsteel 21-22")
 public class CameraTest extends LinearOpMode {
     CameraBot robot;
-    @SuppressWarnings("RedundantThrows")
     public void runOpMode() throws InterruptedException {
         robot = new CameraBot(hardwareMap);
         AprilTagPose lastPose = null;
         waitForStart();
         while(opModeIsActive()){
-            //if(robot.vision.getDetections() != null) lastPose = robot.vision.getDetections()[0].pose;
+            if(robot.vision.getDetections() != null) lastPose = robot.vision.getSingleDetection().pose;
             if(lastPose != null) {
                 telemetry.addData("X", (int) (lastPose.x*1000));
                 telemetry.addData("Y", (int) (lastPose.y*1000));
