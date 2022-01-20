@@ -21,5 +21,6 @@ public class Keith {
         drivetrain = new Drivetrain(hwMap);
         lift = new Lift(hwMap);
         intake = new Intake(hwMap);
+        basket = new Basket(hwMap);
     }
 }
