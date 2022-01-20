@@ -20,5 +20,6 @@ public class Keith {
     public Keith(HardwareMap hwMap){
         drivetrain = new Drivetrain(hwMap);
         lift = new Lift(hwMap);
+        intake = new Intake(hwMap);
     }
 }
