@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModes.DriverControlled;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -26,13 +27,19 @@ public class OneDriver extends LinearOpMode { @Override
             if(gamepad1ex.wasJustPressed(GamepadKeys.Button.X))
                 robot.duckSpinner.toggle();
 
-
-            robot.drivetrain.goXYR(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            robot.drivetrain.setWeightedDrivePower(
+                    new Pose2d(
+                            gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
             robot.intake.spinTake(gamepad1.right_trigger - gamepad1.left_trigger);
 
             /* Telemetry */
-            telemetry.addData("Lift Error", robot.lift.getPositionError());
-            telemetry.update(); 
+            robot.lift.getData(telemetry);
+            robot.basket.getData(telemetry);
+            telemetry.update();
         }
     }
 }

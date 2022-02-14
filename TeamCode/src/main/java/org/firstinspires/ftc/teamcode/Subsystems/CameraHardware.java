@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Libraries.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
 import org.opencv.core.Core;
@@ -45,6 +46,11 @@ public class CameraHardware extends Subsystem {
             public void onError(int errorCode) {
             }
         });
+    }
+
+    @Override
+    public void getData(Telemetry telemetry) {
+
     }
 
     static class DuckFinderPipeline extends OpenCvPipeline {

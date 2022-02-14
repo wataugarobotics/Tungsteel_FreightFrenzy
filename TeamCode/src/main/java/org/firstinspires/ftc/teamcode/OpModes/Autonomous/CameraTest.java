@@ -14,7 +14,7 @@ public class CameraTest extends LinearOpMode {
         AprilTagPose lastPose = null;
         waitForStart();
         while(opModeIsActive()){
-            if(robot.vision.getDetections() != null) lastPose = robot.vision.getSingleDetection().pose;
+            if(robot.vision.getDetections() != null && robot.vision.getDetections().length !=0) lastPose = robot.vision.getSingleDetection().pose;
             if(lastPose != null) {
                 telemetry.addData("X", (int) (lastPose.x*1000));
                 telemetry.addData("Y", (int) (lastPose.y*1000));

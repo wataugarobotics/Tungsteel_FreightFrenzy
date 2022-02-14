@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Libraries.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Libraries.Subsystem;
 import org.opencv.core.Point;
@@ -70,6 +71,20 @@ public class CameraHardwareAprilTag extends Subsystem {
         return false;
     }
     public AprilTagDetection getSingleDetection(){
-        return getDetections()[0];
+        if(getDetections().length != 0) return getDetections()[0];
+        return null;
+    }
+    public Integer whichDuck(){
+        int FIRST = -100; //50, -90, -110
+        int SECOND = -80;
+        int THIRD = 0;
+        if(getDetections() == null || getDetections().length == 0) return 0;
+        double center = getSingleDetection().center.x;
+        if(center < FIRST) return 1;
+        if(center < SECOND) return 2;
+        return 3;
+    }
+    @Override
+    public void getData(Telemetry telemetry) {
     }
 }

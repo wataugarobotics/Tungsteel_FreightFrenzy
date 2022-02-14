@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Libraries.Roadrunner.drive;
+package org.firstinspires.ftc.teamcode.Subsystems;
 
 import androidx.annotation.NonNull;
 
@@ -25,7 +25,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Libraries.Roadrunner.drive.TwoWheelTrackingLocalizer;
 import org.firstinspires.ftc.teamcode.Libraries.Roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Libraries.Roadrunner.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.Libraries.Roadrunner.trajectorysequence.TrajectorySequenceRunner;
@@ -52,9 +55,9 @@ import static org.firstinspires.ftc.teamcode.Libraries.Roadrunner.drive.DriveCon
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
-
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6.8, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5.2, 0, 0);
+    private float speedMod = 1;
     public static double LATERAL_MULTIPLIER = 1;
 
     public static double VX_WEIGHT = 1;
@@ -78,7 +81,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+                new Pose2d(0.5, 0.5, Math.toRadians(3.0)), 1);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -130,6 +133,44 @@ public class SampleMecanumDrive extends MecanumDrive {
         setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
     }
+
+
+    public void goXYR(double x, double y, double r) { //Makes the robot move based on an x, y, and r value
+        // Values x, y, and r come from the joystick during driver controlled
+        // Calculate the power
+        double leftFrontPower = (y + x + r) * speedMod;
+        double leftRearPower = (y - x + r) * speedMod;
+        double rightFrontPower = (y - x - r) * speedMod;
+        double rightRearPower = (y + x - r) * speedMod;
+        // Send calculated power to wheels
+        // Range.clip() makes sure that the power will never be greater than 1 or less than -1
+        leftFront.setPower(Range.clip(leftFrontPower,-1, 1));
+        leftRear.setPower(Range.clip(leftRearPower,-1, 1));
+        rightFront.setPower(Range.clip(rightFrontPower,-1, 1));
+        rightRear.setPower(Range.clip(rightRearPower,-1, 1));
+    }
+    public void goPolarDegrees(double angle, double magnitude){ // Same as goPolarRadians, but in degrees
+        goPolarRadians(Math.toRadians(angle), magnitude);
+    }
+    public void goPolarRadians(double angle, double magnitude){ // Strafes the robot at a specified angle
+        double piOver4 = Math.PI / 4; //see Seamonster's mecanum site for math
+        double leftSlant = Math.sin(angle - piOver4) * Range.clip(magnitude, -1, 1);
+        double rightSlant = Math.sin(angle + piOver4) * Range.clip(magnitude, -1, 1);
+        leftFront.setPower(leftSlant);
+        rightRear.setPower(leftSlant);
+        rightFront.setPower(rightSlant);
+        rightRear.setPower(rightSlant);
+    }
+
+    /* # Setter and Getter methods # */
+    public void setSpeedMod(float speedMod){
+        this.speedMod = speedMod;
+    }
+    public float getSpeedMod(){
+        return speedMod;
+    }
+
+
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
@@ -317,5 +358,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+    public static void getData(Telemetry telemetry){
+
     }
 }
